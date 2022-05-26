@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "esnext"
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx"],
+  "extends": "./tsconfig.json"
+}

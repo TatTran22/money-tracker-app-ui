@@ -1,0 +1,11 @@
+# Dependency directories
+/node_modules
+
+# NextJS Files
+/build
+/public/*
+/.next
+next-env.d.ts
+.prettierrc.js
+next.config.js
+next-i18next.config.js

@@ -1,0 +1,17 @@
+{
+  "eslint.enable": true,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "cSpell.words": [
+    "chakra",
+    "clsx",
+    "supabase",
+    "zxcvbn"
+  ],
+  "i18n-ally.localesPaths": [
+    "locales"
+  ],
+  "workbench.editor.wrapTabs": true,
+}
