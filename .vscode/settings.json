@@ -10,8 +10,5 @@
     "supabase",
     "zxcvbn"
   ],
-  "i18n-ally.localesPaths": [
-    "locales"
-  ],
   "workbench.editor.wrapTabs": true,
 }
