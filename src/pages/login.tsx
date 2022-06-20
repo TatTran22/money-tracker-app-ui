@@ -26,11 +26,11 @@ import Router from 'next/router'
 
 const Login: NextPage = () => {
   const toast = useToast()
+  const { setUser } = useUser()
   const [rememberMe, setRememberMe] = useState(true)
   const boxBackgroundVariant = useBreakpointValue({ base: 'transparent', sm: 'bg-surface' })
   const emailRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
-  const { setUser } = useUser()
 
   const onSubmit = async (
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
@@ -42,7 +42,7 @@ const Login: NextPage = () => {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       })
-      if (status === 200) {
+      if (status === 202) {
         setUser(data.user)
         toast({
           title: 'Login Successful',

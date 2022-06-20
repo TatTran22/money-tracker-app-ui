@@ -9,21 +9,26 @@ import {
   HStack,
   Input,
   Stack,
+  useToast,
   Text,
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useState, createRef, useEffect } from 'react'
+import { useState, createRef } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
+import Router from 'next/router'
 import { Logo } from '~/src/components/Auth/Logo'
 // import { OAuthButtonGroup } from '~/src/components/Auth/OAuthButtonGroup'
 import { EmailField } from '~/src/components/Auth/EmailField'
 import { PasswordField } from '~/src/components/Auth/PasswordField'
 import Layout from '@/components/Layout/Layout'
-import { useAuth } from '@/hooks/auth'
+import AuthService from '@/hooks/auth'
+import { useUser } from '@/hooks/AuthUser'
 
 const SignUp: NextPage = () => {
+  const toast = useToast()
+  const { setUser } = useUser()
   const boxBackgroundVariant = useBreakpointValue({ base: 'transparent', sm: 'bg-surface' })
   const [name, setName] = useState({
     first: '',
@@ -32,14 +37,8 @@ const SignUp: NextPage = () => {
   const emailRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
   const passwordConfirmRef = createRef<HTMLInputElement>()
-  const [errors, setErrors] = useState<string[]>([])
 
-  const { register } = useAuth({
-    middleware: 'guest',
-    redirectIfAuthenticated: '/',
-  })
-
-  const onSubmit = (
+  const onSubmit = async (
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
   ) => {
     event.preventDefault()
@@ -49,20 +48,31 @@ const SignUp: NextPage = () => {
       console.log(emailRef.current.value)
       console.log(passwordRef.current.value)
       console.log(passwordConfirmRef.current.value)
-      void register({
+      const { data, status }: { data: { user: User }; status: number } = await AuthService.register({
         first_name: name.first,
         last_name: name.last,
         email: emailRef.current.value,
         password: passwordRef.current.value,
         password_confirmation: passwordConfirmRef.current.value,
-        setErrors,
       })
+      console.log(data)
+      if (status === 201) {
+        setUser(data.user)
+        toast({
+          title: 'Registration Successful',
+          status: 'success',
+        })
+        void Router.push('/')
+      } else {
+        toast({
+          title: 'Registration Failed',
+          description: 'Please check your credentials',
+          status: 'error',
+        })
+      }
     }
   }
 
-  useEffect(() => {
-    console.log('errors', errors)
-  }, [errors])
   return (
     <Layout title="Sign Up">
       <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
@@ -115,7 +125,7 @@ const SignUp: NextPage = () => {
 
                 <EmailField ref={emailRef} />
                 <PasswordField ref={passwordRef} />
-                <PasswordField ref={passwordConfirmRef} />
+                <PasswordField ref={passwordConfirmRef} id="password-confirm" label="Confirm Password" />
               </Stack>
 
               <Stack spacing="6">

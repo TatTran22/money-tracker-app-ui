@@ -9,7 +9,7 @@ export const EmailField = React.forwardRef<HTMLInputElement, InputProps>((props,
     <FormControl>
       <FormLabel htmlFor="email">Email</FormLabel>
       <InputGroup>
-        <Input id="email" ref={mergeRef} name="email" autoComplete="current-email" required {...props} />
+        <Input id="email" ref={mergeRef} name="email" type="email" required {...props} />
       </InputGroup>
     </FormControl>
   )

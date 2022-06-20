@@ -33,8 +33,8 @@ class AuthService {
       params: props,
     })
       .then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem('token', response.data.token)
+        if (response.status === 201) {
+          localStorage.setItem('token', response.data.token || '')
         }
         return response
       })
@@ -45,7 +45,7 @@ class AuthService {
     await csrf()
     return ApiService.post(`/api/login`, { params: props })
       .then((response) => {
-        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('token', response.data.token || '')
         return response
       })
       .catch((err) => err.response)

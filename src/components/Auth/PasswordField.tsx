@@ -25,7 +25,9 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>((pro
 
   return (
     <FormControl>
-      <FormLabel htmlFor="password">Password</FormLabel>
+      <FormLabel htmlFor={props.id ? props.id : 'password'}>
+        {props.id == 'password-confirm' ? 'Confirm Password' : 'Password'}
+      </FormLabel>
       <InputGroup>
         <InputRightElement>
           <IconButton
@@ -36,7 +38,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>((pro
           />
         </InputRightElement>
         <Input
-          id="password"
+          id={props.id ? props.id : 'password'}
           ref={mergeRef}
           name="password"
           type={isOpen ? 'text' : 'password'}
