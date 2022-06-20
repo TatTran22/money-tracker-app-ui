@@ -7,16 +7,16 @@ import { CTA } from '@/components/CTA'
 import { Footer } from '@/components/Footer'
 import Layout from '@/components/Layout/Layout'
 import siteMeta from '@/data/siteMetadata'
+import AuthUser from '@/hooks/AuthUser'
 
 const Index = () => {
+  const user = AuthUser()
+
   return (
     <Layout title="Home">
       <Container height="100vh">
         <Hero title={siteMeta.title} />
-        <Main>
-          <CTA />
-        </Main>
-
+        <Main>{user ? <Text>Hello {user.email}</Text> : <CTA />}</Main>
         <Footer>
           <Text>Next ❤️ Chakra</Text>
         </Footer>

@@ -17,7 +17,7 @@ export default function Footer() {
         align={{ base: 'center', md: 'center' }}
       >
         <Text>{`© ${siteMeta.title} ${new Date().getFullYear()} - All rights reserved`}</Text>
-        <Stack direction={'row'} spacing={6}>
+        <Stack direction={'row'} spacing={6} hidden>
           <SocialButton label={'Twitter'} href={'#'}>
             <FaTwitter />
           </SocialButton>
