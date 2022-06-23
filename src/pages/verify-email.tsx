@@ -1,15 +1,19 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { Stack, Text, Button } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { Container } from '@/components/Container'
 import Layout from '@/components/Layout/Layout'
-import { useAuth } from '@/hooks/auth'
+import AuthService from '@/hooks/auth'
 
 const VerifyEmail = () => {
-  const { logout, resendEmailVerification } = useAuth({
-    middleware: 'auth',
-  })
-  const [status, setStatus] = useState<string | null>(null)
-
+  const router = useRouter()
+  // const [status, setStatus] = useState<string | null>(null)
+  const onLogout = async () => {
+    const { status } = await AuthService.logout()
+    if (status === 204) {
+      void router.push('/login')
+    }
+  }
   return (
     <Layout title="Verify Email">
       <Container maxW="lg" py={{ base: '12', md: '24' }} px={{ base: '0', sm: '8' }}>
@@ -21,8 +25,8 @@ const VerifyEmail = () => {
           {status === 'verification-link-sent' && (
             <Text>A new verification link has been sent to the email address you provided during registration.</Text>
           )}
-          <Button onClick={() => resendEmailVerification({ setStatus })}>Resend Verification Email</Button>
-          <Button type="button" onClick={logout}>
+          <Button>Resend Verification Email</Button>
+          <Button type="button" onClick={onLogout}>
             Logout
           </Button>
         </Stack>

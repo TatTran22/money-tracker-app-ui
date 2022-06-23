@@ -28,15 +28,14 @@ const Login: NextPage = () => {
   const toast = useToast()
   const { setUser } = useUser()
   const [rememberMe, setRememberMe] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const boxBackgroundVariant = useBreakpointValue({ base: 'transparent', sm: 'bg-surface' })
   const emailRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
 
-  const onSubmit = async (
-    event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
-  ) => {
+  const onSubmit = async (event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault()
-    console.log('submit')
+    setIsLoading(true)
     if (emailRef.current && passwordRef.current) {
       const { data, status }: { data: Token & { user: User }; status: number } = await AuthService.login({
         email: emailRef.current.value,
@@ -56,6 +55,7 @@ const Login: NextPage = () => {
         })
       }
     }
+    setIsLoading(false)
   }
 
   return (
@@ -119,7 +119,7 @@ const Login: NextPage = () => {
                 </Button>
               </HStack>
               <Stack spacing="6">
-                <Button variant="primary" onClick={onSubmit}>
+                <Button variant="primary" onClick={onSubmit} isLoading={isLoading}>
                   Sign in
                 </Button>
                 <HStack hidden>

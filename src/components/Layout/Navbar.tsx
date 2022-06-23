@@ -9,16 +9,30 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useColorModeValue,
   Stack,
   Center,
   Link,
+  useToast,
+  useColorModeValue,
 } from '@chakra-ui/react'
-import AuthUser from '@/hooks/AuthUser'
+import { useRouter } from 'next/router'
+import { useUser } from '@/hooks/AuthUser'
+import AuthService from '~/src/hooks/auth'
 import { DarkModeSwitch } from '@/components/DarkModeSwitch'
 
 export default function NavBar() {
-  const user = AuthUser()
+  const router = useRouter()
+  const toast = useToast()
+  const { user, setUser } = useUser()
+
+  const onLogout = async () => {
+    const { status } = await AuthService.logout()
+    if (status === 204) {
+      setUser(null)
+      toast({ title: 'Logout Successful' })
+    }
+  }
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} position="sticky" top={0} zIndex={1}>
@@ -47,13 +61,24 @@ export default function NavBar() {
                     <MenuDivider />
                     <MenuItem>Your Servers</MenuItem>
                     <MenuItem>Account Settings</MenuItem>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={onLogout}>Logout</MenuItem>
                   </MenuList>
                 </Menu>
               ) : (
-                <Link href="/login">
-                  <Button variant={'link'}>Login</Button>
-                </Link>
+                <Button
+                  as={Link}
+                  isExternal
+                  variant="primary"
+                  rounded="button"
+                  flexGrow={3}
+                  mx={2}
+                  width="full"
+                  onClick={() => {
+                    void router.push('/login')
+                  }}
+                >
+                  Login
+                </Button>
               )}
             </Stack>
           </Flex>

@@ -13,7 +13,6 @@ interface SignUpProps {
 export const useAuth = () => {
   const prefix = '/api'
   const { data: currentUser } = useSWR(`${prefix}/user`, async () => {
-    ApiService.setToken()
     return ApiService.get(`${prefix}/user`)
       .then((res) => res.data)
       .catch(() => null)
@@ -34,8 +33,9 @@ class AuthService {
     })
       .then((response) => {
         if (response.status === 201) {
-          localStorage.setItem('token', response.data.token || '')
+          localStorage.setItem('token', response.data.token.token || '')
         }
+        ApiService.setToken()
         return response
       })
       .catch((err) => err.response)
@@ -45,7 +45,8 @@ class AuthService {
     await csrf()
     return ApiService.post(`/api/login`, { params: props })
       .then((response) => {
-        localStorage.setItem('token', response.data.token || '')
+        localStorage.setItem('token', response.data.token.token || '')
+        ApiService.setToken()
         return response
       })
       .catch((err) => err.response)
@@ -54,6 +55,7 @@ class AuthService {
   public static async logout(): Promise<AxiosResponse> {
     return ApiService.post(`/api/logout`)
       .then((res) => {
+        console.log(res)
         localStorage.removeItem('token')
         return res
       })

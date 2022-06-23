@@ -34,6 +34,7 @@ const SignUp: NextPage = () => {
     first: '',
     last: '',
   })
+  const [isLoading, setIsLoading] = useState(false)
   const emailRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
   const passwordConfirmRef = createRef<HTMLInputElement>()
@@ -42,35 +43,40 @@ const SignUp: NextPage = () => {
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
   ) => {
     event.preventDefault()
+    setIsLoading(true)
     console.log('submit')
     if (emailRef.current && passwordRef.current && passwordConfirmRef.current) {
-      console.log(name)
-      console.log(emailRef.current.value)
-      console.log(passwordRef.current.value)
-      console.log(passwordConfirmRef.current.value)
-      const { data, status }: { data: { user: User }; status: number } = await AuthService.register({
-        first_name: name.first,
-        last_name: name.last,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-        password_confirmation: passwordConfirmRef.current.value,
-      })
+      const { data, status }: { data: { user?: User; errors?: SignUpError }; status: number } =
+        await AuthService.register({
+          first_name: name.first,
+          last_name: name.last,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          password_confirmation: passwordConfirmRef.current.value,
+        })
       console.log(data)
-      if (status === 201) {
+      if (data.user && status == 201) {
         setUser(data.user)
         toast({
           title: 'Registration Successful',
           status: 'success',
         })
         void Router.push('/')
-      } else {
+      } else if (data.errors) {
+        let errorMessage = ''
+        Object.keys(data.errors)
+          .filter((err) => err)
+          .forEach((err) => {
+            errorMessage += `${err[0]}`
+          })
         toast({
           title: 'Registration Failed',
-          description: 'Please check your credentials',
+          description: errorMessage,
           status: 'error',
         })
       }
     }
+    setIsLoading(false)
   }
 
   return (
@@ -125,11 +131,11 @@ const SignUp: NextPage = () => {
 
                 <EmailField ref={emailRef} />
                 <PasswordField ref={passwordRef} />
-                <PasswordField ref={passwordConfirmRef} id="password-confirm" label="Confirm Password" />
+                <PasswordField ref={passwordConfirmRef} id="password-confirm" />
               </Stack>
 
               <Stack spacing="6">
-                <Button variant="primary" onClick={onSubmit}>
+                <Button variant="primary" onClick={onSubmit} isLoading={isLoading}>
                   Sign up
                 </Button>
                 {/* <HStack hidden>
