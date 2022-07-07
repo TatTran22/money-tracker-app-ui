@@ -4,5 +4,12 @@
     "composite": true,
     "module": "esnext"
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    ".eslintrc.js",
+    "**/*.ts",
+    "**/*.tsx",
+    "next-sitemap.config.js"
+  ]
 }

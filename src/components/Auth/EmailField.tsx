@@ -1,8 +1,8 @@
 import { FormControl, FormLabel, Input, InputGroup, InputProps, useMergeRefs } from '@chakra-ui/react'
-import * as React from 'react'
+import { forwardRef, useRef } from 'react'
 
-export const EmailField = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const inputRef = React.useRef<HTMLInputElement>(null)
+export const EmailField = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const mergeRef = useMergeRefs(inputRef, ref)
 
   return (

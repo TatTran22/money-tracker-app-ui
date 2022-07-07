@@ -1,19 +1,19 @@
 // import { ReactNode } from 'react'
 import {
-  Box,
-  Flex,
   Avatar,
+  Box,
   Button,
+  Center,
+  Flex,
+  Link,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
+  MenuItem,
+  MenuList,
   Stack,
-  Center,
-  Link,
-  useToast,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useUser } from '@/hooks/AuthUser'
@@ -24,7 +24,8 @@ export default function NavBar() {
   const router = useRouter()
   const toast = useToast()
   const { user, setUser } = useUser()
-
+  const currentRoute = router.pathname
+  const href = currentRoute === '/login' ? '/signup' : '/login'
   const onLogout = async () => {
     const { status } = await AuthService.logout()
     if (status === 204) {
@@ -55,7 +56,9 @@ export default function NavBar() {
                     </Center>
                     <br />
                     <Center>
-                      <p>Username</p>
+                      <Link href="/profile">
+                        <p>{user.nickname}</p>
+                      </Link>
                     </Center>
                     <br />
                     <MenuDivider />
@@ -74,10 +77,10 @@ export default function NavBar() {
                   mx={2}
                   width="full"
                   onClick={() => {
-                    void router.push('/login')
+                    void router.push(href)
                   }}
                 >
-                  Login
+                  {currentRoute === '/login' ? 'Sign Up' : 'Login'}
                 </Button>
               )}
             </Stack>

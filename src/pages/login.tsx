@@ -6,15 +6,15 @@ import {
   Divider,
   Heading,
   HStack,
+  Link,
   Stack,
   Text,
-  useToast,
   useBreakpointValue,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react'
-import React, { useState, createRef } from 'react'
+import React, { createRef, useState } from 'react'
 import type { NextPage } from 'next'
-import Link from 'next/link'
 import { Logo } from '~/src/components/Auth/Logo'
 // import { OAuthButtonGroup } from '~/src/components/Auth/OAuthButtonGroup'
 import { PasswordField } from '~/src/components/Auth/PasswordField'
@@ -27,7 +27,7 @@ import Router from 'next/router'
 const Login: NextPage = () => {
   const toast = useToast()
   const { setUser } = useUser()
-  const [rememberMe, setRememberMe] = useState(true)
+  const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const boxBackgroundVariant = useBreakpointValue({ base: 'transparent', sm: 'bg-surface' })
   const emailRef = createRef<HTMLInputElement>()
@@ -40,19 +40,25 @@ const Login: NextPage = () => {
       const { data, status }: { data: Token & { user: User }; status: number } = await AuthService.login({
         email: emailRef.current.value,
         password: passwordRef.current.value,
+        remember: rememberMe,
       })
       if (status === 202) {
         setUser(data.user)
-        toast({
-          title: 'Login Successful',
-        })
+        if (!toast.isActive('login-success')) {
+          toast({
+            id: 'login-success',
+            title: 'Login Successful',
+          })
+        }
         void Router.push('/')
       } else {
-        toast({
-          title: 'Login Failed',
-          description: 'Please check your credentials',
-          status: 'error',
-        })
+        if (!toast.isActive('login-failed'))
+          toast({
+            id: 'login-failed',
+            title: 'Login Failed',
+            description: 'Please check your credentials',
+            status: 'error',
+          })
       }
     }
     setIsLoading(false)
@@ -114,9 +120,11 @@ const Login: NextPage = () => {
                 >
                   Remember me
                 </Checkbox>
-                <Button variant="link" colorScheme="blue" size="sm">
-                  Forgot password?
-                </Button>
+                <Link href="/forgot-password">
+                  <Button variant="link" colorScheme="blue" size="sm">
+                    Forgot password?
+                  </Button>
+                </Link>
               </HStack>
               <Stack spacing="6">
                 <Button variant="primary" onClick={onSubmit} isLoading={isLoading}>

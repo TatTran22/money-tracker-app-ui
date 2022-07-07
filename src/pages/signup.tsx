@@ -2,19 +2,18 @@ import {
   Box,
   Button,
   Container,
-  // Divider,
   FormControl,
   FormLabel,
   Heading,
   HStack,
   Input,
   Stack,
-  useToast,
   Text,
   useBreakpointValue,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react'
-import { useState, createRef } from 'react'
+import { createRef, useState } from 'react'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import Router from 'next/router'
@@ -63,15 +62,10 @@ const SignUp: NextPage = () => {
         })
         void Router.push('/')
       } else if (data.errors) {
-        let errorMessage = ''
-        Object.keys(data.errors)
-          .filter((err) => err)
-          .forEach((err) => {
-            errorMessage += `${err[0]}`
-          })
+        const errors = Object.values(data.errors).filter((err) => err)
         toast({
           title: 'Registration Failed',
-          description: errorMessage,
+          description: errors[0][0],
           status: 'error',
         })
       }

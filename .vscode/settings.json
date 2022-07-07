@@ -11,4 +11,5 @@
     "zxcvbn"
   ],
   "workbench.editor.wrapTabs": true,
+  "eslint.format.enable": true
 }

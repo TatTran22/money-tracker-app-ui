@@ -10,5 +10,4 @@ declare type SignUpError = {
   last_name?: string[]
   email?: string[]
   password?: string[]
-  status_code: number
 }

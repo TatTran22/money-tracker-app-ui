@@ -1,5 +1,6 @@
-import React, { useEffect, useState, createContext, useContext } from 'react'
-import { useAuth } from '@/hooks/auth'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import AuthService from '@/hooks/auth'
+
 const UserContext = createContext<{ user: User | null; setUser: (user: User | null) => void }>({
   user: null,
   setUser: () => {},
@@ -7,13 +8,16 @@ const UserContext = createContext<{ user: User | null; setUser: (user: User | nu
 
 export const UserProvider = (props: any) => {
   const [user, setUser] = useState<User | null>(null)
-  const { currentUser } = useAuth()
+
   useEffect(() => {
-    setUser(currentUser || null)
-    return () => {
-      setUser(null)
-    }
-  }, [currentUser])
+    AuthService.me()
+      .then(({ data }) => {
+        setUser(data.user ? data.user : null)
+      })
+      .catch(() => {
+        setUser(null)
+      })
+  }, [])
 
   return <UserContext.Provider value={{ user, setUser }} {...props} />
 }
