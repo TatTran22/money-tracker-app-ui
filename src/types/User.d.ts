@@ -10,7 +10,7 @@ declare type User = {
   phone: string | null
   phone_verified_at: string | null
   birthday: string | null
-  nationality_code: string | null
+  country_code: string | null
   created_at: string
   updated_at: string
 }

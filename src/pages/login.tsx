@@ -22,10 +22,11 @@ import { EmailField } from '~/src/components/Auth/EmailField'
 import Layout from '@/components/Layout/Layout'
 import AuthService from '@/hooks/auth'
 import { useUser } from '@/hooks/AuthUser'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 
 const Login: NextPage = () => {
   const toast = useToast()
+  const router = useRouter()
   const { setUser } = useUser()
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -50,7 +51,13 @@ const Login: NextPage = () => {
             title: 'Login Successful',
           })
         }
-        void Router.push('/')
+        const { callback } = router.query
+        console.log('callback', callback)
+        if (callback) {
+          await router.push(callback as string)
+        } else {
+          await router.push('/')
+        }
       } else {
         if (!toast.isActive('login-failed'))
           toast({

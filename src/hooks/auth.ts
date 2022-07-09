@@ -60,6 +60,12 @@ class AuthService {
       .catch((err) => err.response)
   }
 
+  public static async getUserProfile(nickname: string): Promise<AxiosResponse> {
+    return ApiService.get(`${prefix}/profile/${nickname}`)
+      .then((res) => res)
+      .catch((err) => err.response)
+  }
+
   public static async forgotPassword(props: { email: string }): Promise<AxiosResponse> {
     return ApiService.post(`${prefix}/forgot-password`, props)
       .then((res) => res)
@@ -77,16 +83,8 @@ class AuthService {
       .catch((err) => err.response)
   }
 
-  public static async verifyEmail({
-    id,
-    hash,
-    query,
-  }: {
-    id: string
-    hash: string
-    query: string
-  }): Promise<AxiosResponse> {
-    return ApiService.get(`${prefix}/verify-email/${id}/${hash}`, { params: query })
+  public static async verifyEmail(verifyUrl: string): Promise<AxiosResponse> {
+    return ApiService.get(verifyUrl)
       .then((res) => res)
       .catch((err) => err.response)
   }

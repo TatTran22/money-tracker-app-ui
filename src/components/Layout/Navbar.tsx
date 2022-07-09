@@ -47,23 +47,21 @@ export default function NavBar() {
               {user ? (
                 <Menu>
                   <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0}>
-                    <Avatar size={'sm'} src={'https://avatars.dicebear.com/api/male/username.svg'} />
+                    <Avatar size={'sm'} name={`${user.first_name} ${user.last_name}`} />
                   </MenuButton>
                   <MenuList alignItems={'center'}>
                     <br />
                     <Center>
-                      <Avatar size={'2xl'} src={'https://avatars.dicebear.com/api/male/username.svg'} />
+                      <Avatar size={'2xl'} name={`${user.first_name} ${user.last_name}`} />
                     </Center>
                     <br />
                     <Center>
-                      <Link href="/profile">
+                      <Link href={`/profile/${user.nickname}`}>
                         <p>{user.nickname}</p>
                       </Link>
                     </Center>
                     <br />
                     <MenuDivider />
-                    <MenuItem>Your Servers</MenuItem>
-                    <MenuItem>Account Settings</MenuItem>
                     <MenuItem onClick={onLogout}>Logout</MenuItem>
                   </MenuList>
                 </Menu>

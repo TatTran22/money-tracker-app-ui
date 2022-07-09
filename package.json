@@ -18,6 +18,7 @@
     "@fontsource/rubik": "^4.5.10",
     "@next/env": "^12.2.0",
     "axios": "^0.27.2",
+    "countries-list": "^2.6.1",
     "framer-motion": "^6.3.16",
     "next": "latest",
     "next-pwa": "^5.5.4",
