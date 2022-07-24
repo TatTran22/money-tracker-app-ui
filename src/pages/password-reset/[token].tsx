@@ -10,7 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { EmailField } from '~/src/components/Auth/EmailField'
 import { PasswordField } from '~/src/components/Auth/PasswordField'
 import Layout from '~/src/components/Layout/Layout'
@@ -84,7 +84,7 @@ const PasswordReset = () => {
                     type="email"
                     value={emailValue}
                     onChange={(event) => setEmailValue(event.target.value)}
-                    isDisabled={token ? true : false}
+                    isDisabled={!!token}
                     isRequired
                   />
                 </FormControl>

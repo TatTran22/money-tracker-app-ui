@@ -11,5 +11,7 @@
     "zxcvbn"
   ],
   "workbench.editor.wrapTabs": true,
-  "eslint.format.enable": true
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "eslint.packageManager": "pnpm",
 }

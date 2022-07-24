@@ -8,7 +8,7 @@ export default {
     },
     '*::placeholder': {
       opacity: 1,
-      color: 'subtle',
+      color: 'muted',
     },
     '*, *::before, &::after': {
       borderColor: mode('gray.200', 'gray.700')(props),
